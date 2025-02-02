@@ -13,7 +13,6 @@
             line-height: 1.6;
             background-color: #d0e7ff;
             position: relative;
-            display: none;
         }
         .container {
             width: 75%;
@@ -23,6 +22,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
         }
         .password-container {
             position: absolute;
@@ -58,7 +58,7 @@
         <button onclick="checkPassword()">Submit</button>
     </div>
 
-    <div class="container" id="content" style="display: none;">
+    <div class="container" id="content">
         <h1>WSET D1 Chapter 3 - The Growing Environment</h1>
         <p>Upload an Excel file to load flashcards dynamically.</p>
         <input type="file" id="upload" accept=".xlsx, .xls" />
@@ -71,7 +71,6 @@
             const password = document.getElementById('passwordInput').value;
             if (password === "051184") {
                 document.getElementById('passwordPrompt').style.display = 'none';
-                document.body.style.display = 'block';
                 document.getElementById('content').style.display = 'block';
             } else {
                 alert('Incorrect password!');
