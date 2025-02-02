@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
             background-color: #d0e7ff;
+            flex-direction: column;
         }
         .container {
             width: 75%;
@@ -69,12 +70,40 @@
             const password = document.getElementById('passwordInput').value;
             if (password === "051184") {
                 document.getElementById('passwordPrompt').style.display = 'none';
-                document.body.style.display = 'block';
                 document.getElementById('content').style.display = 'block';
             } else {
                 alert('Incorrect password!');
             }
         }
+
+        document.getElementById('upload').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                
+                const flashcardsDiv = document.getElementById('flashcards');
+                flashcardsDiv.innerHTML = '';
+                json.slice(1).forEach(row => {
+                    if (row[1] && row[2]) {
+                        const card = document.createElement('div');
+                        card.innerHTML = `<strong>Q:</strong> ${row[1]} <br> <strong>A:</strong> ${row[2]}`;
+                        card.style.border = '1px solid black';
+                        card.style.padding = '10px';
+                        card.style.margin = '10px 0';
+                        card.style.borderRadius = '5px';
+                        flashcardsDiv.appendChild(card);
+                    }
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        });
     </script>
 </body>
 </html>
